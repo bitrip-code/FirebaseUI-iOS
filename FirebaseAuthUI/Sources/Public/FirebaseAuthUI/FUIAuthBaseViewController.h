@@ -37,6 +37,11 @@ typedef void (^FUIAuthAlertActionHandler)(void);
  */
 @property(nonatomic, strong, readonly) FIRAuth *auth;
 
+/** @property auth
+    @brief The @c FUIAuthProvider picked by the user.
+ */
+@property(nonatomic, strong) id<FUIAuthProvider> provider;
+
 /** @property authUI
     @brief The @c FUIAuth instance of the application.
  */

@@ -138,7 +138,13 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
 }
 
 - (void)onNext:(NSString *)emailText {
-  FUIEmailAuth *emailAuth = [self.authUI providerWithID:FIREmailAuthProviderID];
+  FUIEmailAuth *emailAuth;
+  if ([self.provider isKindOfClass: [FUIEmailAuth class]]) {
+     emailAuth = self.provider;
+  }
+  if (emailAuth == nil ) {
+    emailAuth = [self.authUI providerWithID:FIREmailAuthProviderID];
+  }
   id<FUIAuthDelegate> delegate = self.authUI.delegate;
 
   if (![[self class] isValidEmail:emailText]) {
@@ -176,6 +182,8 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
                                cancelHandler:^{
         [self.authUI signOutWithError:nil];
       }];
+    } else if ([emailAuth.signInMethod isEqualToString:FIREmailLinkAuthSignInMethod]) {
+        [self sendSignInLinkToEmail:emailText];
     } else if ([providers containsObject:FIREmailAuthProviderID]) {
       UIViewController *controller;
       if ([delegate respondsToSelector:@selector(passwordSignInViewControllerForAuthUI:email:)]) {
@@ -186,8 +194,6 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
                                                                        email:emailText];
       }
       [self pushViewController:controller];
-    } else if ([emailAuth.signInMethod isEqualToString:FIREmailLinkAuthSignInMethod]) {
-      [self sendSignInLinkToEmail:emailText];
     } else {
       if (providers.count) {
         // There's some unsupported providers, surface the error to the user.

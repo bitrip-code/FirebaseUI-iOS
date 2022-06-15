@@ -206,6 +206,9 @@ static NSString *const kEmailLinkSignInLinkingCredentialKey = @"FIRAuthEmailLink
                                                                      email:defaultValue];
     }
   }
+  if ([controller isKindOfClass:[FUIAuthBaseViewController class]]) {
+      ((FUIAuthBaseViewController* ) controller).provider = self;
+  }
 
   if ([presentingViewController isKindOfClass:[FUIAuthBaseViewController class]]) {
     FUIAuthBaseViewController *authController =
