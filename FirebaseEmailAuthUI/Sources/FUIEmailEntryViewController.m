@@ -197,7 +197,7 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
     } else {
       if (providers.count) {
         // There's some unsupported providers, surface the error to the user.
-        [self showAlertWithMessage:FUILocalizedString(kStr_CannotAuthenticateError)];
+        [self showAlertWithMessage:@"This account previously used a different sign in method. Please use that same method"];
       } else {
         // New user.
         UIViewController *controller;
